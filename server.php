@@ -5,7 +5,7 @@
  */
 
 use MySQLQueryExplain\Server\EventSubscriber;
-use MySQLQueryExplain\Server\Mysql\Config;
+use MySQLQueryExplain\Server\MySQL\Config;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;

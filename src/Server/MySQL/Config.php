@@ -1,6 +1,6 @@
 <?php
 
-namespace MySQLQueryExplain\Server\Mysql;
+namespace MySQLQueryExplain\Server\MySQL;
 
 /**
  * @author Lukas Lukac <services@trki.sk>
@@ -80,6 +80,7 @@ class Config implements \JsonSerializable
     {
         return json_encode(['config' => [
             'hostname' => $this->hostname,
+            'username' => $this->user,
             'database' => $this->database
         ]]);
     }
