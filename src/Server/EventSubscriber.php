@@ -2,7 +2,6 @@
 
 namespace MySQLQueryExplain\Server;
 
-use MySQLQueryExplain\Server\Mysql\Config;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
@@ -17,16 +16,16 @@ class EventSubscriber implements MessageComponentInterface
     private $client;
 
     /**
-     * @var Config
+     * @var Analyzer
      */
-    private $databaseConfig;
+    private $analyzer;
 
     /**
-     * @param Config $databaseConfig
+     * @param Analyzer $analyzer
      */
-    public function __construct(Config $databaseConfig)
+    public function __construct(Analyzer $analyzer)
     {
-        $this->databaseConfig = $databaseConfig;
+        $this->analyzer = $analyzer;
     }
 
     /**
@@ -38,7 +37,7 @@ class EventSubscriber implements MessageComponentInterface
     public function onOpen(ConnectionInterface $conn)
     {
         $this->client = $conn;
-        $this->client->send(json_encode($this->databaseConfig));
+        $this->client->send(json_encode($this->analyzer->getRepositoryConnectionConfig()));
     }
 
     /**
@@ -47,7 +46,11 @@ class EventSubscriber implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $conn, $queryToExplain)
     {
+        try {
 
+        } catch (\Exception $e) {
+
+        }
     }
 
     /**
