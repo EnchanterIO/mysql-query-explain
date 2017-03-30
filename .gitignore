@@ -1,2 +1,3 @@
 vendor
 .idea
+src/Client/node_modules

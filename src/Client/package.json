@@ -32,6 +32,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
+    "autobahn": "^0.12.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   }
