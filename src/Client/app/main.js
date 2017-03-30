@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import DbInfo from './dbInfo';
 
 // const React = require('react');
 // const ReactDOM = require('react-dom');
@@ -9,31 +10,39 @@ const Content = React.createClass({
     getInitialState() {
         return {
             connection: null,
-            dbConfig: {}
+            dbConfig: {
+                database: '',
+                hostname: '',
+                username: ''
+            }
         }
     },
 
     componentWillMount() {
-        this.connection = new WebSocket('ws://localhost:1337/app');
+        this.connection = new WebSocket('ws://localhost:1337');
+        this.connection.onmessage = event => {
+            // yes we like JSON.parse
+            const message = JSON.parse(JSON.parse(event.data));
 
-        this.connection.addEventListener('open', event => {
-            console.log('boom');
-        });
+            const dbConfig = Object.assign(
+                {},
+                message.config
+            );
 
-        // this.connection = new WebSocket('wss://echo.websocket.org');
-        // this.connection.onmessage = event => {
-        //     console.log(event.data);
-        // }
-        //
-        // setInterval(_ => {
-        //     this.connection.send(Math.random());
-        // }, 10000);
+            let state = this.state;
+            state.dbConfig = dbConfig;
+            this.setState(state);
+        }
+        setTimeout(_ => {
+            this.connection.send("SELECT * FROM tablename;");
+        }, 1000);
     },
 
     render() {
         return (
             <article>
-                <header>Hey {this.props.test} welcome to MySQL query explain project :)</header>
+                <header>Hey welcome to MySQL query explain project :)</header>
+                <DbInfo dbConfig={this.state.dbConfig}></DbInfo>
             </article>
         );
     }
