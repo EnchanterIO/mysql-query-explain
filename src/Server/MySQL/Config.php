@@ -78,9 +78,9 @@ class Config implements \JsonSerializable
      */
     function jsonSerialize()
     {
-        return json_encode([
+        return json_encode(['config' => [
             'hostname' => $this->hostname,
             'database' => $this->database
-        ]);
+        ]]);
     }
 }
