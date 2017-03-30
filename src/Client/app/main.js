@@ -14,12 +14,12 @@ const Content = React.createClass({
     },
 
     componentWillMount() {
-        this.connection = new WebSocket('ws://localhost:1337');
+        this.connection = new WebSocket('ws://localhost:1337/app');
 
         this.connection.addEventListener('open', event => {
             console.log('boom');
         });
-        
+
         // this.connection = new WebSocket('wss://echo.websocket.org');
         // this.connection.onmessage = event => {
         //     console.log(event.data);
