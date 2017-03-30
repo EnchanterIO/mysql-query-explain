@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-4": {
+            "MySQLQueryExplain\\": "src"
+        }
+    },
+    "require": {
+        "react/react": "^0.4.2",
+        "cboden/ratchet": "^0.3.6"
+    }
+}
