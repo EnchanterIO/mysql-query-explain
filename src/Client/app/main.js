@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import autobahn from 'autobahn';
 
 // const React = require('react');
 // const ReactDOM = require('react-dom');
@@ -9,20 +8,18 @@ const Content = React.createClass({
 
     getInitialState() {
         return {
-            connection: null
+            connection: null,
+            dbConfig: {}
         }
     },
 
     componentWillMount() {
-        this.connection = new autobahn.Connection({
-            url: 'ws://localhost:1337/app',
-            realm: 'realm1'
+        this.connection = new WebSocket('ws://localhost:1337');
+
+        this.connection.addEventListener('open', event => {
+            console.log('boom');
         });
-        console.log('hey');
-        this.connection.onopen = function (session) {
-            console.log(session);
-            console.log()
-        }
+        
         // this.connection = new WebSocket('wss://echo.websocket.org');
         // this.connection.onmessage = event => {
         //     console.log(event.data);
