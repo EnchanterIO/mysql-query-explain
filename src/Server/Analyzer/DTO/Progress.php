@@ -15,16 +15,16 @@ class Progress implements \JsonSerializable
     /**
      * @var array
      */
-    public $stats;
+    public $rows;
 
     /**
      * @param string $message Message explaining currently processing state
-     * @param array $stats MySQL query result
+     * @param array $rows MySQL query result
      */
-    public function __construct($message, array $stats = [])
+    public function __construct($message, array $rows = [])
     {
         $this->message = $message;
-        $this->stats = $stats;
+        $this->rows = $rows;
     }
 
     /**
@@ -35,7 +35,7 @@ class Progress implements \JsonSerializable
         return [
             'progress' => [
                 'message' => $this->message,
-                'stats' => $this->stats
+                'rows' => $this->rows
             ]
         ];
     }

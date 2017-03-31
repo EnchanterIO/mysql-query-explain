@@ -58,6 +58,10 @@ class Analyzer
         $progressCallback(new Progress('Collecting query execution stages...'));
         $executionStages = $this->performanceSchemaRepository->collectExecutionStages($queryIdentity);
         $progressCallback(new Progress('Execution stages:', $executionStages));
+
+        $progressCallback(new Progress('Resetting performance schema configurations...'));
+        $this->performanceSchemaRepository->disableStats();
+        $progressCallback(new Progress('Performance schema successfully reseted.'));
     }
 
     /**
@@ -80,6 +84,8 @@ class Analyzer
         if (!$this->performanceSchemaRepository->enableStats()) {
             throw new PerformanceSchemaDisabledException('Performance schema is disabled. Unable to explain query execution!');
         }
+
+        $this->performanceSchemaRepository->resetStats();
     }
 
     /**
