@@ -47,34 +47,7 @@ const Application = React.createClass({
             if (undefined !== message.body.config) {
                 this.setDbConfig(message.body.config);
             } else if (undefined !== message.body.progress) {
-                // this.setQueryMessages(message.body.progress);
-                const example =
-                    {
-                        'message': 'Behold the statistics',
-                        'stats': [
-                            {
-                                'thread_id': '320',
-                                'event': 'wow I just run a select',
-                                'imaginary_next_id': '322',
-                            },
-                            {
-                                'thread_id': '320',
-                                'event': 'now I did a different thing',
-                                'imaginary_next_id': '312'
-                            },
-                            {
-                                'thread_id': '320',
-                                'event': 'I am rocking today',
-                                'imaginary_next_id': '329'
-                            },
-                            {
-                                'thread_id': '320',
-                                'event': 'with this I finish the query',
-                                'imaginary_next_id': '322'
-                            }
-                        ]
-                    };
-                this.setQueryMessages(example);
+                this.setQueryMessages(message.body.progress);
             } else {
                 console.log('what the fuck are you sending to me?, leave my socket alone please :)');
             }
