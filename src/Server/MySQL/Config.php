@@ -78,10 +78,12 @@ class Config implements \JsonSerializable
      */
     function jsonSerialize()
     {
-        return json_encode(['config' => [
-            'hostname' => $this->hostname,
-            'username' => $this->user,
-            'database' => $this->database
-        ]]);
+        return [
+            'config' => [
+                'hostname' => $this->hostname,
+                'username' => $this->user,
+                'database' => $this->database
+            ]
+        ];
     }
 }
