@@ -5,6 +5,7 @@ namespace MySQLQueryExplain\Server\Analyzer;
 use MySQLQueryExplain\Server\MySQL\ApplicationRepository;
 use MySQLQueryExplain\Server\MySQL\PerformanceSchemaRepository;
 use MySQLQueryExplain\Server\MySQL\Config;
+use MySQLQueryExplain\Server\Analyzer\DTO\Progress;
 
 /**
  * @author Lukas Lukac <services@trki.sk>
@@ -33,14 +34,27 @@ class Analyzer
 
     /**
      * @param string $queryToExplain
+     * @param callable $progressCallback
      *
      * @return void
+     *
+     * @throws PerformanceSchemaDisabledException
      */
-    public function explain($queryToExplain)
+    public function explain($queryToExplain, callable $progressCallback)
     {
-        // Enable and reset stats
+        $progressCallback(new Progress('Preparing performance schema...'));
         $this->preparePerformanceSchema();
-        $this->executeQuery($queryToExplain);
+        $progressCallback(new Progress('Performance schema successfully prepared.'));
+
+        $progressCallback(new Progress('Executing given query...'));
+        $queryResult = $this->applicationRepository->fetchAssoc($queryToExplain);
+        $progressCallback(new Progress('Query executed.', $queryResult));
+
+        $queryIdentity = $this->performanceSchemaRepository->collectQueryIdentity($queryToExplain);
+
+        $progressCallback(new Progress('Collecting query execution stages...'));
+        $executionStages = $this->performanceSchemaRepository->collectExecutionStages($queryIdentity);
+        $progressCallback(new Progress('Execution stages:', $executionStages));
     }
 
     /**
@@ -60,20 +74,9 @@ class Analyzer
      */
     protected function preparePerformanceSchema()
     {
-        if (!$this->performanceSchemaRepository->isEnabled()) {
+        if (!$this->performanceSchemaRepository->enableStats()) {
             throw new PerformanceSchemaDisabledException('Performance schema is disabled. Unable to explain query execution!');
         }
-        $this->performanceSchemaRepository->enableStats();
-    }
-
-    /**
-     * @param string $query
-     *
-     * @return void
-     */
-    protected function executeQuery($query)
-    {
-        $this->applicationRepository->execute($query);
     }
 
     /**

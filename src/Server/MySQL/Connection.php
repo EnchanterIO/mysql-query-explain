@@ -44,7 +44,7 @@ class Connection
         $sth = $this->pdo->prepare($query);
         $sth->execute();
 
-        return $sth->fetchAll();
+        return $sth;
     }
 
     /**

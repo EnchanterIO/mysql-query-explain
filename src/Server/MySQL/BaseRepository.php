@@ -31,6 +31,30 @@ class BaseRepository
     }
 
     /**
+     * @param string $query
+     *
+     * @return array
+     */
+    public function fetchAssoc($query)
+    {
+        $sth = $this->execute($query);
+
+        return $sth->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return array
+     */
+    public function fetchAllAssoc($query)
+    {
+        $sth = $this->execute($query);
+
+        return $sth->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * @return Config
      */
     public function getConnectionConfig()

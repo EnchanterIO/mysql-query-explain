@@ -3,6 +3,7 @@
 namespace MySQLQueryExplain\Server\HttpSocket;
 
 use MySQLQueryExplain\Server\Analyzer\Analyzer;
+use MySQLQueryExplain\Server\Analyzer\DTO\Progress;
 use MySQLQueryExplain\Server\Analyzer\PerformanceSchemaDisabledException;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -56,7 +57,12 @@ class EventSubscriber implements MessageComponentInterface
     public function onMessage(ConnectionInterface $conn, $queryToExplain)
     {
         try {
-            $this->analyzer->explain($queryToExplain);
+            $this->analyzer->explain($queryToExplain, function(Progress $progress) {
+                $this->sendToClient(new Response($progress));
+            });
+
+            $response = new Response('');
+
         } catch (PerformanceSchemaDisabledException $e) {
             $response = new PerformanceSchemaDisabledResponse();
         }
