@@ -21,13 +21,15 @@ class QueryInput extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Query:
-                    <textarea value={this.state.value} onChange={this.handleChange}></textarea>
-                </label>
-                <input type="submit" value="Analyze" />
-            </form>
+            <div className="col">
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="queryInputArea">Query:</label>
+                        <textarea id="queryInputArea" className="form-control" value={this.state.value} onChange={this.handleChange} rows="15"></textarea>
+                    </div>
+                    <button className="btn btn-outline-primary" type="submit">Analyze</button>
+                </form>
+            </div>
         );
     }
 }

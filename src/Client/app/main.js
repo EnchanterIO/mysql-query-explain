@@ -17,7 +17,7 @@ const Content = React.createClass({
                 hostname: '',
                 username: ''
             },
-            queryMessages: []
+            queryMessages: ['test', 'test1']
         }
     },
 
@@ -31,7 +31,7 @@ const Content = React.createClass({
 
     setQueryMessages(queryMessage) {
         let state = this.state;
-        state.queryMessages.push(queryMessage);
+        state.queryMessages.push('Lukas litro');
         this.setState(state);
     },
 
@@ -43,14 +43,12 @@ const Content = React.createClass({
     componentWillMount() {
         let connection = new WebSocket('ws://localhost:1337');
         connection.onmessage = event => {
-            // yes we like JSON.parse
-            const jsonBody = JSON.parse(event.data);
-            const body = JSON.parse(jsonBody.body);
-            
-            if (undefined !== body.config) {
-                this.setDbConfig(body.config);
+            const message = JSON.parse(event.data);
+
+            if (undefined !== message.body.config) {
+                this.setDbConfig(message.body.config);
             } else {
-                this.setQueryMessages(message.queryMessage);
+                this.setQueryMessages(message.body.queryMessage);
             }
         }
         let state = this.state;
@@ -61,10 +59,15 @@ const Content = React.createClass({
     render() {
         return (
             <article>
-                <header>Hey welcome to MySQL query explain project :)</header>
-                <DbInfo dbConfig={this.state.dbConfig} />
-                <QueryInfo onSubmit={this.handleAnalyzeSubmit} />
-                <AnalyzeOutput messages={this.state.queryMessages} />
+                <div className="row">
+                    <DbInfo dbConfig={this.state.dbConfig} />
+                </div>
+                <div className="row">
+                    <QueryInfo onSubmit={this.handleAnalyzeSubmit} />
+                </div>
+                <div className="row">
+                    <AnalyzeOutput messages={this.state.queryMessages} />
+                </div>
             </article>
         );
     }

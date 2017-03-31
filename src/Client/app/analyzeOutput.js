@@ -7,8 +7,13 @@ class AnalyzeOutput extends React.Component {
     }
 
     render() {
+        const messages = this.props.messages.map((message, id) => {
+            return <li key={id}>{message}</li>
+        });
         return (
-            <p>{this.props.queryMessages}</p>
+            <ul>
+                {messages}
+            </ul>
         );
     }
 }
