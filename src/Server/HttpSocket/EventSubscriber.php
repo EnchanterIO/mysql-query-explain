@@ -1,7 +1,9 @@
 <?php
 
-namespace MySQLQueryExplain\Server;
+namespace MySQLQueryExplain\Server\HttpSocket;
 
+use MySQLQueryExplain\Server\Analyzer\Analyzer;
+use MySQLQueryExplain\Server\Analyzer\PerformanceSchemaDisabledException;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
@@ -33,28 +35,39 @@ class EventSubscriber implements MessageComponentInterface
      * will be executed on.
      *
      * @param ConnectionInterface $conn
+     *
+     * @return void
      */
     public function onOpen(ConnectionInterface $conn)
     {
         $this->client = $conn;
-        $this->client->send(json_encode($this->analyzer->getRepositoryConnectionConfig()));
+
+        $response = new Response($this->analyzer->getRepositoryConnectionConfig());
+
+        $this->sendToClient($response);
     }
 
     /**
      * @param ConnectionInterface $conn
      * @param string $queryToExplain
+     *
+     * @return void
      */
     public function onMessage(ConnectionInterface $conn, $queryToExplain)
     {
         try {
-
-        } catch (\Exception $e) {
-
+            $this->analyzer->explain($queryToExplain);
+        } catch (PerformanceSchemaDisabledException $e) {
+            $response = new PerformanceSchemaDisabledResponse();
         }
+
+        $this->sendToClient($response);
     }
 
     /**
      * @param ConnectionInterface $conn
+     *
+     * @return void
      */
     public function onClose(ConnectionInterface $conn)
     {
@@ -68,7 +81,19 @@ class EventSubscriber implements MessageComponentInterface
     }
 
     /**
+     * @param \JsonSerializable $body
+     *
+     * @return void
+     */
+    private function sendToClient(\JsonSerializable $body)
+    {
+        $this->client->send(json_encode($body));
+    }
+
+    /**
      * @param string $message
+     *
+     * @return void
      */
     private function log($message)
     {

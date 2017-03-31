@@ -21,6 +21,31 @@ class PerformanceSchemaRepository
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        $result = $this->connection->execute("SHOW GLOBAL VARIABLES LIKE 'performance_schema';");
+
+        return $result[0]['Value'] === 'ON';
+    }
+
+    public function enableStats()
+    {
+
+    }
+
+    public function resetStats()
+    {
+
+    }
+
+    public function disableStats()
+    {
+
+    }
+
+    /**
      * @return Config
      */
     public function getConnectionConfig()

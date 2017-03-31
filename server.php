@@ -4,8 +4,8 @@
  * @author Lukas Lukac <services@trki.sk>
  */
 
-use MySQLQueryExplain\Server\EventSubscriber;
-use MySQLQueryExplain\Server\Analyzer;
+use MySQLQueryExplain\Server\HttpSocket\EventSubscriber;
+use MySQLQueryExplain\Server\Analyzer\Analyzer;
 use MySQLQueryExplain\Server\MySQL\Config;
 use MySQLQueryExplain\Server\MySQL\PerformanceSchemaRepository;
 use MySQLQueryExplain\Server\MySQL\Connection;
@@ -15,9 +15,10 @@ use Ratchet\WebSocket\WsServer;
 
 require __DIR__.'/vendor/autoload.php';
 
-$databaseConfig = new Config('localhost', 'root', 'mjfdlv', 'hack');
+$databaseConfig = new Config('localhost', 'root', '', 'hack');
 $databaseConnection = new Connection($databaseConfig);
 $performanceSchemaRepository = new PerformanceSchemaRepository($databaseConnection);
+$analyzer = new Analyzer($performanceSchemaRepository);
 
 $server = IoServer::factory(
     new HttpServer(
