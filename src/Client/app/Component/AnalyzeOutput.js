@@ -8,8 +8,8 @@ class AnalyzeOutput extends React.Component {
     }
 
     render() {
-        const progress = this.props.messages.map((progress) => {
-            return <Progress message={progress.message} stats={progress.stats} />
+        const progress = this.props.messages.map((progress, id) => {
+            return <Progress key={id} message={progress.message} stats={progress.stats} />
         });
 
         return (
