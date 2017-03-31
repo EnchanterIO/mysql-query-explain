@@ -2,6 +2,7 @@
 
 namespace MySQLQueryExplain\Server\Analyzer;
 
+use MySQLQueryExplain\Server\MySQL\ApplicationRepository;
 use MySQLQueryExplain\Server\MySQL\PerformanceSchemaRepository;
 use MySQLQueryExplain\Server\MySQL\Config;
 
@@ -11,16 +12,23 @@ use MySQLQueryExplain\Server\MySQL\Config;
 class Analyzer
 {
     /**
+     * @var ApplicationRepository
+     */
+    private $applicationRepository;
+
+    /**
      * @var PerformanceSchemaRepository
      */
     private $performanceSchemaRepository;
 
     /**
+     * @param ApplicationRepository $applicationRepository
      * @param PerformanceSchemaRepository $performanceSchemaRepository
      */
-    public function __construct(PerformanceSchemaRepository $performanceSchemaRepository)
+    public function __construct(ApplicationRepository $applicationRepository, PerformanceSchemaRepository $performanceSchemaRepository)
     {
         $this->performanceSchemaRepository = $performanceSchemaRepository;
+        $this->applicationRepository = $applicationRepository;
     }
 
     /**
@@ -56,7 +64,6 @@ class Analyzer
             throw new PerformanceSchemaDisabledException('Performance schema is disabled. Unable to explain query execution!');
         }
         $this->performanceSchemaRepository->enableStats();
-        $this->performanceSchemaRepository->resetStats();
     }
 
     /**
@@ -66,7 +73,7 @@ class Analyzer
      */
     protected function executeQuery($query)
     {
-
+        $this->applicationRepository->execute($query);
     }
 
     /**
