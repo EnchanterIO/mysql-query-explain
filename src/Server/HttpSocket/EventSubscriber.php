@@ -61,7 +61,7 @@ class EventSubscriber implements MessageComponentInterface
                 $this->sendToClient(new Response($progress));
             });
 
-            $response = new Response('');
+            $response = new Response('Analyzer finished.');
 
         } catch (PerformanceSchemaDisabledException $e) {
             $response = new PerformanceSchemaDisabledResponse();

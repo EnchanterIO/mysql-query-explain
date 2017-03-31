@@ -47,7 +47,7 @@ class Analyzer
         $progressCallback(new Progress('Performance schema successfully prepared.'));
 
         $progressCallback(new Progress('Executing given query...'));
-        $queryResult = $this->applicationRepository->fetchAssoc($queryToExplain);
+        $queryResult = $this->applicationRepository->fetchAllAssoc($queryToExplain);
         $progressCallback(new Progress('Query executed.', $queryResult));
 
         $queryIdentity = $this->performanceSchemaRepository->collectQueryIdentity($queryToExplain);
