@@ -9,13 +9,13 @@ class AnalyzeOutput extends React.Component {
 
     render() {
         const progress = this.props.messages.map((progress, id) => {
-            return <Progress key={id} message={progress.message} stats={progress.stats} />
+            return <Progress isError={progress.isError} key={id} message={progress.message} rows={progress.rows} />
         });
 
         return (
             <div className="row">
                 <div className="col explain_messages">
-                    <h3>Analyze output:</h3>
+                    <h4>Analyze output:</h4>
                     <div>
                         {progress}
                     </div>

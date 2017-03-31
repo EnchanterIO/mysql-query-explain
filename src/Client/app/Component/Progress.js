@@ -6,7 +6,7 @@ class Progress extends React.Component {
     }
 
     getTableHeaders() {
-        const headers = Object.keys(this.props.stats[0]);
+        const headers = Object.keys(this.props.rows[0]);
         const tableHeaders = headers.map((header, id) => {
             return <th key={id}>{header}</th>
         });
@@ -15,7 +15,7 @@ class Progress extends React.Component {
     }
 
     getTableBody() {
-        const tableBody = this.props.stats.map((row, id) => {
+        const tableBody = this.props.rows.map((row, id) => {
             return <tr key={id}>
                 {this.getTableRow(row)}
             </tr>
@@ -38,7 +38,7 @@ class Progress extends React.Component {
 
     render() {
         let table = null;
-        if (this.props.stats.length > 0) {
+        if (this.props.rows.length > 0) {
             const tableHeaders = this.getTableHeaders();
             const tableBody = this.getTableBody();
             table = <table className="table table-bordered">
@@ -54,14 +54,10 @@ class Progress extends React.Component {
 
             </table>
         }
-        // let tableHeaders = this.props.stats[0].keys();
-        // const tableRows;
-
-
-
+        
         return (
             <div>
-            <p>{this.props.message}</p>
+            <p className={this.props.isError ? 'error' : ''}>{this.props.message}</p>
             {table}
             </div>
         )
