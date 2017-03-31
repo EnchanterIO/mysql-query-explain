@@ -2,10 +2,12 @@
 
 namespace MySQLQueryExplain\Server\Analyzer;
 
+use MySQLQueryExplain\Server\Analyzer\Exception\PerformanceSchemaDisabledException;
+use MySQLQueryExplain\Server\Analyzer\DTO\Progress;
 use MySQLQueryExplain\Server\MySQL\ApplicationRepository;
+use MySQLQueryExplain\Server\MySQL\Exception\UnableToExecuteSqlException;
 use MySQLQueryExplain\Server\MySQL\PerformanceSchemaRepository;
 use MySQLQueryExplain\Server\MySQL\Config;
-use MySQLQueryExplain\Server\Analyzer\DTO\Progress;
 
 /**
  * @author Lukas Lukac <services@trki.sk>
@@ -39,6 +41,7 @@ class Analyzer
      * @return void
      *
      * @throws PerformanceSchemaDisabledException
+     * @throws UnableToExecuteSqlException
      */
     public function explain($queryToExplain, callable $progressCallback)
     {

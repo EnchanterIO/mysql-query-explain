@@ -2,6 +2,8 @@
 
 namespace MySQLQueryExplain\Server\MySQL;
 
+use MySQLQueryExplain\Server\MySQL\Exception\UnableToExecuteSqlException;
+
 /**
  * @author Lukas Lukac <services@trki.sk>
  */
@@ -38,8 +40,9 @@ class BaseRepository
     public function fetchAssoc($query)
     {
         $sth = $this->execute($query);
+        $result = $sth->fetch(\PDO::FETCH_ASSOC);
 
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+        return $this->throwExceptionIfUnableToFetchResult($result, $query);
     }
 
     /**
@@ -50,8 +53,9 @@ class BaseRepository
     public function fetchAllAssoc($query)
     {
         $sth = $this->execute($query);
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $sth->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->throwExceptionIfUnableToFetchResult($result, $query);
     }
 
     /**
@@ -60,5 +64,22 @@ class BaseRepository
     public function getConnectionConfig()
     {
         return $this->connection->getConfig();
+    }
+
+    /**
+     * @param array $result
+     * @param string $query
+     *
+     * @return array
+     *
+     * @throws UnableToExecuteSqlException
+     */
+    private function throwExceptionIfUnableToFetchResult(&$result, $query)
+    {
+        if ($result === false) {
+            throw new UnableToExecuteSqlException('Unable to execute SQL: ' . $query);
+        }
+
+        return $result;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MySQLQueryExplain\Server\Analyzer;
+namespace MySQLQueryExplain\Server\Analyzer\Exception;
 
 /**
  * @author Lukas Lukac <services@trki.sk>
