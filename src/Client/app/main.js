@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DbInfo from './dbInfo';
-import QueryInfo from './queryInput';
-import AnalyzeOutput from './analyzeOutput';
+import DbInfo from './Component/DbInfo';
+import QueryInput from './Component/QueryInput';
+import AnalyzeOutput from './Component/AnalyzeOutput';
 
 // const React = require('react');
 // const ReactDOM = require('react-dom');
 
-const Content = React.createClass({
+const Application = React.createClass({
 
     getInitialState() {
         return {
@@ -17,7 +17,7 @@ const Content = React.createClass({
                 hostname: '',
                 username: ''
             },
-            queryMessages: ['test', 'test1']
+            queryMessages: []
         }
     },
 
@@ -31,13 +31,12 @@ const Content = React.createClass({
 
     setQueryMessages(queryMessage) {
         let state = this.state;
-        state.queryMessages.push('Lukas litro');
+        state.queryMessages.push(queryMessage);
         this.setState(state);
     },
 
     handleAnalyzeSubmit(query) {
         this.state.connection.send(query);
-        console.log('hey I am here');
     },
 
     componentWillMount() {
@@ -47,8 +46,37 @@ const Content = React.createClass({
 
             if (undefined !== message.body.config) {
                 this.setDbConfig(message.body.config);
+            } else if (undefined !== message.body.progress) {
+                // this.setQueryMessages(message.body.progress);
+                const example =
+                    {
+                        'message': 'Behold the statistics',
+                        'stats': [
+                            {
+                                'thread_id': '320',
+                                'event': 'wow I just run a select',
+                                'imaginary_next_id': '322',
+                            },
+                            {
+                                'thread_id': '320',
+                                'event': 'now I did a different thing',
+                                'imaginary_next_id': '312'
+                            },
+                            {
+                                'thread_id': '320',
+                                'event': 'I am rocking today',
+                                'imaginary_next_id': '329'
+                            },
+                            {
+                                'thread_id': '320',
+                                'event': 'with this I finish the query',
+                                'imaginary_next_id': '322'
+                            }
+                        ]
+                    };
+                this.setQueryMessages(example);
             } else {
-                this.setQueryMessages(message.body.queryMessage);
+                console.log('what the fuck are you sending to me?, leave my socket alone please :)');
             }
         }
         let state = this.state;
@@ -59,17 +87,13 @@ const Content = React.createClass({
     render() {
         return (
             <article>
-                <div className="row">
+                <header className="row">
                     <DbInfo dbConfig={this.state.dbConfig} />
-                </div>
-                <div className="row">
-                    <QueryInfo onSubmit={this.handleAnalyzeSubmit} />
-                </div>
-                <div className="row">
-                    <AnalyzeOutput messages={this.state.queryMessages} />
-                </div>
+                </header>
+                <QueryInput onSubmit={this.handleAnalyzeSubmit} />
+                <AnalyzeOutput messages={this.state.queryMessages} />
             </article>
         );
     }
 });
-ReactDOM.render(<Content />, document.getElementById('content'));
+ReactDOM.render(<Application />, document.getElementById('application'));
