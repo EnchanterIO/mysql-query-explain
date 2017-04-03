@@ -63,7 +63,7 @@ class EventSubscriber implements MessageComponentInterface
 
             $response = new Response(new Progress('Analyzer finished.'));
         } catch (\Exception $e) {
-            $response = new Response(new FailedProgress($e->getMessage()));
+            $response = new Response(new FailedProgress($e->getTraceAsString()));
         }
 
         $this->sendToClient($response);

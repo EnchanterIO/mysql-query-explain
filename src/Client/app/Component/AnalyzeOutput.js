@@ -15,7 +15,7 @@ class AnalyzeOutput extends React.Component {
         return (
             <div className="row">
                 <div className="col explain_messages">
-                    <h4>Analyze output:</h4>
+                    <h5>Analyze output:</h5>
                     <div>
                         {progress}
                     </div>
