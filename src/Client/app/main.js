@@ -36,6 +36,9 @@ const Application = React.createClass({
     },
 
     handleAnalyzeSubmit(query) {
+        let state = this.state;
+        state.queryMessages = [];
+        this.setState(state)
         this.state.connection.send(query);
     },
 
