@@ -62,7 +62,7 @@ class Connection
     {
         $dsn = sprintf('mysql:dbname=%s;host=%s', $this->config->getDatabase(), $this->config->getHostname());
 
-        $this->pdo = new \PDO($dsn, $this->config->getUser(), $this->config->getPassword());
+        $this->pdo = new \PDO($dsn, $this->config->getUser(), $this->config->getPassword(), [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
         $this->isOpen = true;
     }
 }

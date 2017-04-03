@@ -81,7 +81,7 @@ class PerformanceSchemaRepository extends BaseRepository
     {
         $enabledValue = $enable ? 'YES' : 'NO';
 
-        $this->execute("UPDATE performance_schema.setup_consumers SET ENABLED = {$enabledValue} WHERE NAME = 'events_statements_history';");
+        $this->execute("UPDATE performance_schema.setup_consumers SET ENABLED = {$enabledValue} WHERE NAME LIKE 'events_statements_history%';");
         $this->execute("UPDATE performance_schema.setup_consumers SET ENABLED = {$enabledValue} WHERE NAME LIKE 'events_statements_%';");
         $this->execute("UPDATE performance_schema.setup_consumers SET ENABLED = {$enabledValue} WHERE NAME LIKE 'events_stages_%';");
         $this->execute("UPDATE performance_schema.setup_instruments SET ENABLED = {$enabledValue}, TIMED = 'YES' WHERE NAME LIKE 'stage/sql/%';");

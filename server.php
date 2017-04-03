@@ -21,6 +21,9 @@ $databaseConnection = new Connection($databaseConfig);
 $applicationRepository = new ApplicationRepository($databaseConnection);
 $performanceSchemaRepository = new PerformanceSchemaRepository($databaseConnection);
 $analyzer = new Analyzer($applicationRepository, $performanceSchemaRepository);
+//$analyzer->explain('SELECT t', function(\MySQLQueryExplain\Server\Analyzer\DTO\Progress $progress) {
+//    echo $progress->message;
+//});
 
 $server = IoServer::factory(
     new HttpServer(
