@@ -5,8 +5,6 @@ namespace MySQLQueryExplain\Server\HttpSocket;
 use MySQLQueryExplain\Server\Analyzer\Analyzer;
 use MySQLQueryExplain\Server\Analyzer\DTO\FailedProgress;
 use MySQLQueryExplain\Server\Analyzer\DTO\Progress;
-use MySQLQueryExplain\Server\Analyzer\Exception\PerformanceSchemaDisabledException;
-use MySQLQueryExplain\Server\MySQL\Exception\UnableToExecuteSqlException;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
