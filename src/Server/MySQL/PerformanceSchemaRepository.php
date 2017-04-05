@@ -45,6 +45,10 @@ class PerformanceSchemaRepository extends BaseRepository
             $query
         ));
 
+        if (empty($result) || strlen($result['THREAD_ID']) === 0 || strlen($result['EVENT_ID']) === 0 || strlen($result['digest']) === 0) {
+            throw new \InvalidArgumentException('Unable to retrieve query identity!');
+        }
+
         return new QueryIdentity($result['THREAD_ID'], $result['EVENT_ID'], $result['digest']);
     }
 
