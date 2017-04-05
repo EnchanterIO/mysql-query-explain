@@ -16,7 +16,13 @@ class QueryInput extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.onSubmit(this.state.value);
+        // we don't want to send the ; to the server
+        let query = this.state.value.trim();
+        if (";" === query.slice(-1)) {
+            debugger;
+            query = query.slice(0, -1);
+        }
+        this.props.onSubmit(query);
     }
 
     render() {

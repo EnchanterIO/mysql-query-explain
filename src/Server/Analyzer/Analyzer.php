@@ -61,7 +61,7 @@ class Analyzer
 
         $progressCallback(new Progress('Collecting query statement analysis...'));
         $statementsAnalysis = $this->performanceSchemaRepository->collectStatementAnalysis($queryIdentity);
-        $progressCallback(new Progress('Statement analysis::', $statementsAnalysis));
+        $progressCallback(new Progress('Statement analysis:', $statementsAnalysis));
 
         $progressCallback(new Progress('Resetting performance schema configurations...'));
         $this->performanceSchemaRepository->disableStats();
