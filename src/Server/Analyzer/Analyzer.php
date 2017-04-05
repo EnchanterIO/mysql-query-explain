@@ -59,6 +59,10 @@ class Analyzer
         $executionStages = $this->performanceSchemaRepository->collectExecutionStages($queryIdentity);
         $progressCallback(new Progress('Execution stages:', $executionStages));
 
+        $progressCallback(new Progress('Collecting query statement analysis...'));
+        $statementsAnalysis = $this->performanceSchemaRepository->collectStatementAnalysis($queryIdentity);
+        $progressCallback(new Progress('Statement analysis::', $statementsAnalysis));
+
         $progressCallback(new Progress('Resetting performance schema configurations...'));
         $this->performanceSchemaRepository->disableStats();
         $progressCallback(new Progress('Performance schema successfully reseted.'));

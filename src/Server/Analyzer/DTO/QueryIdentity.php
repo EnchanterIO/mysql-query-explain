@@ -18,13 +18,20 @@ class QueryIdentity
     private $nestedEventId;
 
     /**
+     * @var string
+     */
+    private $digest;
+
+    /**
      * @param int $threadId
      * @param int $nestedEventId
+     * @param string $digest
      */
-    public function __construct($threadId, $nestedEventId)
+    public function __construct($threadId, $nestedEventId, $digest)
     {
         $this->threadId = (int) $threadId;
         $this->nestedEventId = (int) $nestedEventId;
+        $this->digest = $digest;
     }
 
     /**
@@ -41,5 +48,13 @@ class QueryIdentity
     public function getNestedEventId()
     {
         return $this->nestedEventId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDigest()
+    {
+        return $this->digest;
     }
 }

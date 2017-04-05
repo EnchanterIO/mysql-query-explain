@@ -41,11 +41,11 @@ class PerformanceSchemaRepository extends BaseRepository
     public function collectQueryIdentity($query)
     {
         $result = $this->fetchAssoc(sprintf(
-            'SELECT THREAD_ID, EVENT_ID FROM performance_schema.events_statements_history_long WHERE SQL_TEXT LIKE "%%%s%%" ORDER BY event_id DESC LIMIT 1;',
+            'SELECT THREAD_ID, EVENT_ID, digest FROM performance_schema.events_statements_history_long WHERE SQL_TEXT LIKE "%%%s%%" ORDER BY event_id DESC LIMIT 1;',
             $query
         ));
 
-        return new QueryIdentity($result['THREAD_ID'], $result['EVENT_ID']);
+        return new QueryIdentity($result['THREAD_ID'], $result['EVENT_ID'], $result['digest']);
     }
 
     /**
@@ -59,6 +59,19 @@ class PerformanceSchemaRepository extends BaseRepository
             "SELECT thread_id, event_name AS en, timer_wait/1e9 AS `timer_wait_ms` FROM performance_schema.events_stages_history_long WHERE THREAD_ID = %d AND NESTING_EVENT_ID = %d ORDER BY event_id DESC;",
             $queryIdentity->getThreadId(),
             $queryIdentity->getNestedEventId()
+        ));
+    }
+
+    /**
+     * @param QueryIdentity $queryIdentity
+     *
+     * @return array
+     */
+    public function collectStatementAnalysis(QueryIdentity $queryIdentity)
+    {
+        return $this->fetchAllAssoc(sprintf(
+            'SELECT full_scan, exec_count, total_latency, lock_latency, rows_sent, rows_examined, tmp_tables, tmp_disk_tables, rows_sorted, sort_merge_passes FROM sys.statement_analysis WHERE digest = "%s"',
+            $queryIdentity->getDigest()
         ));
     }
 
